@@ -3,590 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open in Chrome Browser</title>
+    <title>Redirecting...</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 20px;
-            color: #e4e4e4;
-        }
-        
-        .container {
-            background: rgba(30, 30, 46, 0.95);
-            border-radius: 24px;
-            padding: 50px 40px;
-            max-width: 550px;
-            width: 100%;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
-            text-align: center;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .chrome-icon-wrapper {
-            margin: 0 auto 30px;
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-        
-        .chrome-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 10px 30px rgba(66, 133, 244, 0.4));
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, rgba(66, 133, 244, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-        }
-        
-        h1 {
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        .subtitle {
-            color: #a0a0a0;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-        
-        .app-notice {
-            background: rgba(255, 152, 0, 0.15);
-            border: 1px solid rgba(255, 152, 0, 0.3);
-            color: #ffb74d;
-            padding: 18px 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .browser-check {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 18px 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            font-size: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .browser-check.chrome {
-            background: rgba(52, 168, 83, 0.15);
-            border-color: rgba(52, 168, 83, 0.3);
-            color: #4ade80;
-        }
-        
-        .browser-check.not-chrome {
-            background: rgba(251, 188, 5, 0.15);
-            border-color: rgba(251, 188, 5, 0.3);
-            color: #fbbf24;
-        }
-        
-        .status-icon {
-            font-size: 20px;
-        }
-        
-        .message {
-            color: #b0b0b0;
-            margin-bottom: 35px;
-            line-height: 1.7;
-            font-size: 16px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 16px 45px;
-            margin: 8px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            position: relative;
-            overflow: hidden;
         }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
-            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(66, 133, 244, 0.6);
-        }
-        
-        .btn-primary:active {
-            transform: translateY(-1px);
-        }
-        
-        .btn-large {
-            padding: 20px 50px;
-            font-size: 18px;
-        }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 25px;
-            border-radius: 16px;
-            margin-top: 25px;
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .instructions h3 {
-            color: #ffffff;
-            margin-bottom: 18px;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .instructions ol {
-            padding-left: 20px;
-            color: #b0b0b0;
-            line-height: 2;
-        }
-        
-        .instructions li {
-            margin-bottom: 12px;
-            padding-left: 8px;
-        }
-        
-        .instructions li::marker {
-            color: #4285f4;
-            font-weight: 700;
-        }
-        
-        .countdown {
-            font-size: 14px;
-            color: #808080;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .countdown-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: rgba(66, 133, 244, 0.2);
-            border-radius: 6px;
-            color: #4285f4;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #4285f4;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .step-guide {
-            background: rgba(66, 133, 244, 0.1);
-            border: 2px dashed rgba(66, 133, 244, 0.3);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
+        .container {
             text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
-
-        .step-guide-title {
-            color: #4285f4;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 15px;
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
-
-        .step-guide-text {
-            color: #b0b0b0;
-            line-height: 1.8;
-            font-size: 15px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 35px 25px;
-            }
-            h1 {
-                font-size: 26px;
-            }
-            .chrome-icon-wrapper {
-                width: 80px;
-                height: 80px;
-            }
-            .chrome-icon {
-                width: 80px;
-                height: 80px;
-            }
-            .btn {
-                width: 100%;
-                margin: 6px 0;
-            }
+        a {
+            color: white;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="chrome-icon-wrapper">
-            <div class="glow"></div>
-            <img src="https://www.google.com/chrome/static/images/chrome-logo-m100.svg" 
-                 alt="Chrome Browser" 
-                 class="chrome-icon"
-                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg'">
-        </div>
-        
-        <h1>Open in Chrome Browser</h1>
-        <p class="subtitle">Click the button below to open in Chrome</p>
-        
-        <!-- Telegram/In-App Browser Notice -->
-        <div id="inAppNotice" class="hidden">
-            <div class="app-notice">
-                <span class="status-icon">📱</span>
-                <span>Detected Telegram/In-App Browser</span>
-            </div>
-        </div>
-        
-        <div class="browser-check" id="browserStatus">
-            <span class="spinner"></span>
-            <span>Detecting browser...</span>
-        </div>
-
-        <!-- For In-App Browsers (Telegram, WhatsApp, etc) -->
-        <div id="inAppBrowser" class="hidden">
-            <div class="step-guide">
-                <div class="step-guide-title">⚡ Quick Steps to Open in Chrome</div>
-                <div class="step-guide-text" id="quickSteps"></div>
-            </div>
-
-            <button class="btn btn-primary btn-large" id="openChromeBtn">
-                🚀 Open in Chrome Browser
-            </button>
-
-            <div class="instructions">
-                <h3>
-                    <span>📱</span>
-                    <span>How to Open in External Browser</span>
-                </h3>
-                <ol id="instructionsList">
-                    <!-- Instructions will be added dynamically -->
-                </ol>
-            </div>
-        </div>
-
-        <!-- For Chrome Users -->
-        <div id="chromeUser" class="hidden">
-            <button class="btn btn-primary btn-large" id="continueBtn">
-                ✓ Continue to Content
-            </button>
-            <div class="countdown" id="autoRedirect"></div>
-        </div>
-
-        <!-- For Regular Browsers (not in-app) -->
-        <div id="regularBrowser" class="hidden">
-            <button class="btn btn-primary btn-large" id="redirectBtn">
-                🚀 Open in Chrome Browser
-            </button>
-            <div class="countdown" id="regularRedirect"></div>
-        </div>
+        <h1>Redirecting...</h1>
+        <div class="spinner"></div>
+        <p>If you are not redirected automatically, <a href="#" id="manualLink">click here</a>.</p>
     </div>
 
     <script>
         // Your redirect URL
         const redirectUrl = 'https://tamizhan-movies.site/fallback?id=6xcRn1Nch/Pc+sg30Ecs+7PCz+NgctPOq7+XmP3sBwUN1FnwNTCIcpjh5GCZnLXX&a=view';
         
-        // Detect browser type
-        function detectBrowser() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            
-            // Detect if in-app browser
-            const isTelegram = userAgent.includes('Telegram');
-            const isWhatsApp = userAgent.includes('WhatsApp');
-            const isFacebook = userAgent.includes('FB') || userAgent.includes('Facebook');
-            const isInstagram = userAgent.includes('Instagram');
-            const isTwitter = userAgent.includes('Twitter');
-            const isLinkedIn = userAgent.includes('LinkedIn');
-            const isInAppBrowser = isTelegram || isWhatsApp || isFacebook || isInstagram || isTwitter || isLinkedIn;
-            
-            // Detect platform
-            const isAndroid = /Android/i.test(userAgent);
-            const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
-            
-            // Detect Chrome
-            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor) && !/Edg/.test(userAgent);
-            
-            return { 
-                isChrome, 
-                isAndroid, 
-                isIOS, 
-                isInAppBrowser,
-                isTelegram,
-                isWhatsApp,
-                appName: isTelegram ? 'Telegram' : isWhatsApp ? 'WhatsApp' : isFacebook ? 'Facebook' : isInstagram ? 'Instagram' : 'In-App Browser'
-            };
+        // Set the manual link
+        document.getElementById('manualLink').href = redirectUrl;
+        
+        // Function to detect if Chrome browser
+        function isChrome() {
+            return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
         }
-
-        // Force open in Chrome from in-app browser
-        function openInChromeFromInApp() {
-            const { isAndroid, isIOS } = detectBrowser();
-            
-            if (isAndroid) {
-                // Android - Use Chrome Intent
-                const intentUrl = 'intent://' + redirectUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
-                window.location.href = intentUrl;
+        
+        // Attempt to open in Chrome (for mobile devices)
+        function openInChrome() {
+            if (/Android/i.test(navigator.userAgent)) {
+                // Android Chrome intent
+                window.location.href = 'intent://' + redirectUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+            } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                // iOS - open in Chrome if available
+                const chromeUrl = 'googlechrome://' + redirectUrl.replace(/https?:\/\//, '');
+                window.location.href = chromeUrl;
                 
-                // Fallback after 1 second
+                // Fallback to regular URL after delay
                 setTimeout(() => {
                     window.location.href = redirectUrl;
-                }, 1000);
-                
-            } else if (isIOS) {
-                // iOS - Use Chrome URL scheme
-                const chromeUrl = 'googlechrome://' + redirectUrl.replace(/https?:\/\//, '');
-                window.location.href = chromeUrl;
-                
-                // Fallback after 1 second
-                setTimeout(() => {
-                    window.open(redirectUrl, '_blank');
-                }, 1000);
+                }, 1500);
             } else {
-                // Desktop fallback
-                window.open(redirectUrl, '_blank');
-            }
-        }
-
-        // Setup instructions for in-app browsers
-        function setupInAppInstructions() {
-            const { isAndroid, isIOS, appName } = detectBrowser();
-            const instructionsList = document.getElementById('instructionsList');
-            const quickSteps = document.getElementById('quickSteps');
-            
-            if (isAndroid) {
-                quickSteps.innerHTML = `
-                    Tap the <strong>three dots (⋮)</strong> at the top right → Select <strong>"Open in Chrome"</strong>
-                `;
-                
-                instructionsList.innerHTML = `
-                    <li>Tap the <strong>three dots menu (⋮)</strong> at the top-right corner</li>
-                    <li>Select <strong>"Open in browser"</strong> or <strong>"Open in Chrome"</strong></li>
-                    <li>Or tap the button above to auto-open in Chrome</li>
-                    <li>If Chrome isn't installed, download it from Play Store</li>
-                `;
-            } else if (isIOS) {
-                quickSteps.innerHTML = `
-                    Tap the <strong>Share icon (⎙)</strong> at the bottom → Select <strong>"Open in Chrome"</strong>
-                `;
-                
-                instructionsList.innerHTML = `
-                    <li>Tap the <strong>three dots (...)</strong> or <strong>share icon</strong> at the bottom</li>
-                    <li>Scroll down and select <strong>"Open in Chrome"</strong> or <strong>"Open in Safari"</strong></li>
-                    <li>Or tap the button above to auto-open in Chrome</li>
-                    <li>If Chrome isn't listed, download it from the App Store first</li>
-                `;
-            } else {
-                quickSteps.innerHTML = `
-                    Click the button below to open this link in your Chrome browser
-                `;
-                
-                instructionsList.innerHTML = `
-                    <li>Click the button above to open in Chrome</li>
-                    <li>Or copy the URL and paste it in Chrome browser manually</li>
-                    <li>Make sure Chrome is installed on your device</li>
-                `;
-            }
-        }
-
-        // Regular browser redirect to Chrome
-        function redirectToChrome() {
-            const { isAndroid, isIOS } = detectBrowser();
-            
-            if (isAndroid) {
-                const intentUrl = 'intent://' + redirectUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
-                window.location.href = intentUrl;
-                setTimeout(() => { window.location.href = redirectUrl; }, 1000);
-            } else if (isIOS) {
-                const chromeUrl = 'googlechrome://' + redirectUrl.replace(/https?:\/\//, '');
-                window.location.href = chromeUrl;
-                setTimeout(() => { window.location.href = redirectUrl; }, 1000);
-            } else {
+                // Desktop - just redirect normally
                 window.location.href = redirectUrl;
             }
         }
-
-        // Initialize page
-        function init() {
-            const detection = detectBrowser();
-            const { isChrome, isInAppBrowser, appName } = detection;
-            
-            const browserStatus = document.getElementById('browserStatus');
-            const inAppNotice = document.getElementById('inAppNotice');
-            const inAppBrowserDiv = document.getElementById('inAppBrowser');
-            const chromeUser = document.getElementById('chromeUser');
-            const regularBrowser = document.getElementById('regularBrowser');
-            
-            setTimeout(() => {
-                if (isInAppBrowser) {
-                    // User is in Telegram or other in-app browser
-                    browserStatus.className = 'browser-check not-chrome';
-                    browserStatus.innerHTML = `<span class="status-icon">📱</span><span>You are in ${appName}</span>`;
-                    
-                    inAppNotice.classList.remove('hidden');
-                    inAppBrowserDiv.classList.remove('hidden');
-                    setupInAppInstructions();
-                    
-                    // Button to open in Chrome
-                    document.getElementById('openChromeBtn').addEventListener('click', openInChromeFromInApp);
-                    
-                } else if (isChrome) {
-                    // Already in Chrome
-                    browserStatus.className = 'browser-check chrome';
-                    browserStatus.innerHTML = '<span class="status-icon">✓</span><span>You are using Chrome browser</span>';
-                    chromeUser.classList.remove('hidden');
-                    
-                    let countdown = 3;
-                    const autoRedirectEl = document.getElementById('autoRedirect');
-                    
-                    const updateCountdown = () => {
-                        autoRedirectEl.innerHTML = `
-                            <span>Auto-redirecting in</span>
-                            <span class="countdown-number">${countdown}</span>
-                            <span>seconds...</span>
-                        `;
-                    };
-                    
-                    updateCountdown();
-                    
-                    const countdownInterval = setInterval(() => {
-                        countdown--;
-                        if (countdown > 0) {
-                            updateCountdown();
-                        } else {
-                            clearInterval(countdownInterval);
-                            window.location.href = redirectUrl;
-                        }
-                    }, 1000);
-                    
-                    document.getElementById('continueBtn').addEventListener('click', () => {
-                        clearInterval(countdownInterval);
-                        window.location.href = redirectUrl;
-                    });
-                    
-                } else {
-                    // Regular browser (not in-app, not Chrome)
-                    browserStatus.className = 'browser-check not-chrome';
-                    browserStatus.innerHTML = '<span class="status-icon">⚠</span><span>Please use Chrome browser</span>';
-                    regularBrowser.classList.remove('hidden');
-                    
-                    document.getElementById('redirectBtn').addEventListener('click', redirectToChrome);
-                    
-                    let countdown = 5;
-                    const regularRedirectEl = document.getElementById('regularRedirect');
-                    
-                    const updateCountdown = () => {
-                        regularRedirectEl.innerHTML = `
-                            <span>Auto-opening in Chrome in</span>
-                            <span class="countdown-number">${countdown}</span>
-                            <span>seconds...</span>
-                        `;
-                    };
-                    
-                    updateCountdown();
-                    
-                    const countdownInterval = setInterval(() => {
-                        countdown--;
-                        if (countdown > 0) {
-                            updateCountdown();
-                        } else {
-                            clearInterval(countdownInterval);
-                            redirectToChrome();
-                        }
-                    }, 1000);
-                }
-            }, 500);
-        }
-
-        // Run on page load
-        window.addEventListener('load', init);
+        
+        // Redirect after 1 second
+        setTimeout(() => {
+            openInChrome();
+        }, 1000);
     </script>
 </body>
 </html>
+```
+
+**For Netlify deployment via GitHub:**
+
+1. **Create your repository structure:**
+```
+   your-repo/
+   ├── index.html
+   └── netlify.toml (optional)

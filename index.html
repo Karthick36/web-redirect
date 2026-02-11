@@ -282,4 +282,188 @@
         <div class="chrome-icon-wrapper">
             <div class="glow"></div>
             <img src="https://www.google.com/chrome/static/images/chrome-logo-m100.svg" 
-                 alt="Chrome Browser"
+                 alt="Chrome Browser" 
+                 class="chrome-icon"
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg'">
+        </div>
+        
+        <h1>Open in Chrome</h1>
+        <p class="subtitle">For the best viewing experience</p>
+        
+        <div class="browser-check" id="browserStatus">
+            <span class="spinner"></span>
+            <span>Detecting browser...</span>
+        </div>
+        
+        <div class="message">
+            This content is optimized for Google Chrome browser to ensure the best performance and compatibility.
+        </div>
+
+        <!-- Chrome Users -->
+        <div id="chromeUser" class="hidden">
+            <button class="btn btn-primary" id="continueBtn">
+                ✓ Continue to Content
+            </button>
+            
+            <div class="countdown" id="autoRedirect"></div>
+        </div>
+
+        <!-- Non-Chrome Users -->
+        <div id="nonChromeUser" class="hidden">
+            <button class="btn btn-primary" id="openChromeBtn">
+                🚀 Open in Chrome Browser
+            </button>
+            <button class="btn btn-secondary" id="continueAnywayBtn">
+                Continue with Current Browser
+            </button>
+            
+            <div class="instructions">
+                <h3>
+                    <span>📱</span>
+                    <span>How to Open in Chrome</span>
+                </h3>
+                <ol id="instructionsList">
+                    <!-- Instructions will be added dynamically -->
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Your redirect URL
+        const redirectUrl = 'https://tamizhan-movies.site/fallback?id=6xcRn1Nch/Pc+sg30Ecs+7PCz+NgctPOq7+XmP3sBwUN1FnwNTCIcpjh5GCZnLXX&a=view';
+        
+        // Detect browser
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
+            const isAndroid = /Android/i.test(userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+            
+            return { isChrome, isAndroid, isIOS };
+        }
+
+        // Open in Chrome function
+        function openInChrome() {
+            const { isAndroid, isIOS } = detectBrowser();
+            
+            if (isAndroid) {
+                // Android Chrome intent
+                window.location.href = 'intent://' + redirectUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+                
+                // Fallback after 2 seconds
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            } else if (isIOS) {
+                // iOS Chrome URL scheme
+                const chromeUrl = 'googlechrome://' + redirectUrl.replace(/https?:\/\//, '');
+                window.location.href = chromeUrl;
+                
+                // Fallback after 2 seconds
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            } else {
+                // Desktop - regular redirect
+                window.location.href = redirectUrl;
+            }
+        }
+
+        // Regular redirect
+        function regularRedirect() {
+            window.location.href = redirectUrl;
+        }
+
+        // Setup instructions based on platform
+        function setupInstructions() {
+            const { isAndroid, isIOS } = detectBrowser();
+            const instructionsList = document.getElementById('instructionsList');
+            
+            if (isAndroid) {
+                instructionsList.innerHTML = `
+                    <li>Tap the "Open in Chrome Browser" button above</li>
+                    <li>Select "Chrome" if prompted to choose an app</li>
+                    <li>If Chrome isn't installed, download it from Play Store</li>
+                    <li>Alternatively, copy the link and paste it in Chrome</li>
+                `;
+            } else if (isIOS) {
+                instructionsList.innerHTML = `
+                    <li>Tap the "Open in Chrome Browser" button above</li>
+                    <li>Or tap the Share button (square with arrow up)</li>
+                    <li>Scroll down and select "Open in Chrome"</li>
+                    <li>If Chrome isn't listed, download it from the App Store first</li>
+                `;
+            } else {
+                instructionsList.innerHTML = `
+                    <li>Click the "Open in Chrome Browser" button above</li>
+                    <li>Or copy this page's URL from the address bar</li>
+                    <li>Open Google Chrome on your computer</li>
+                    <li>Paste the URL into Chrome's address bar and press Enter</li>
+                `;
+            }
+        }
+
+        // Initialize page
+        function init() {
+            const { isChrome } = detectBrowser();
+            const browserStatus = document.getElementById('browserStatus');
+            const chromeUser = document.getElementById('chromeUser');
+            const nonChromeUser = document.getElementById('nonChromeUser');
+            
+            setTimeout(() => {
+                if (isChrome) {
+                    browserStatus.className = 'browser-check chrome';
+                    browserStatus.innerHTML = '<span class="status-icon">✓</span><span>You are using Chrome browser</span>';
+                    chromeUser.classList.remove('hidden');
+                    
+                    // Auto redirect countdown
+                    let countdown = 5;
+                    const autoRedirectEl = document.getElementById('autoRedirect');
+                    
+                    const updateCountdown = () => {
+                        autoRedirectEl.innerHTML = `
+                            <span>Auto-redirecting in</span>
+                            <span class="countdown-number">${countdown}</span>
+                            <span>seconds...</span>
+                        `;
+                    };
+                    
+                    updateCountdown();
+                    
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            updateCountdown();
+                        } else {
+                            clearInterval(countdownInterval);
+                            regularRedirect();
+                        }
+                    }, 1000);
+                    
+                    // Manual continue button
+                    document.getElementById('continueBtn').addEventListener('click', () => {
+                        clearInterval(countdownInterval);
+                        regularRedirect();
+                    });
+                    
+                } else {
+                    browserStatus.className = 'browser-check not-chrome';
+                    browserStatus.innerHTML = '<span class="status-icon">⚠</span><span>You are not using Chrome browser</span>';
+                    nonChromeUser.classList.remove('hidden');
+                    setupInstructions();
+                    
+                    // Open in Chrome button
+                    document.getElementById('openChromeBtn').addEventListener('click', openInChrome);
+                    
+                    // Continue anyway button
+                    document.getElementById('continueAnywayBtn').addEventListener('click', regularRedirect);
+                }
+            }, 800);
+        }
+
+        // Run on page load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

@@ -3,177 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open in Chrome</title>
+    <title>Open in Chrome Browser</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             padding: 20px;
+            color: #e4e4e4;
         }
+        
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
+            background: rgba(30, 30, 46, 0.95);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 550px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
             text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+        
+        .chrome-icon-wrapper {
+            margin: 0 auto 30px;
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        
         .chrome-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(66, 133, 244, 0.4));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(66, 133, 244, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+        
+        h1 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .browser-check {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            color: white;
-            animation: pulse 2s infinite;
+            gap: 10px;
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        
+        .browser-check.chrome {
+            background: rgba(52, 168, 83, 0.15);
+            border-color: rgba(52, 168, 83, 0.3);
+            color: #4ade80;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 28px;
+        
+        .browser-check.not-chrome {
+            background: rgba(251, 188, 5, 0.15);
+            border-color: rgba(251, 188, 5, 0.3);
+            color: #fbbf24;
         }
+        
+        .status-icon {
+            font-size: 20px;
+        }
+        
         .message {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            color: #b0b0b0;
+            margin-bottom: 35px;
+            line-height: 1.7;
             font-size: 16px;
         }
-        .browser-check {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-        .browser-check.chrome {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-        .browser-check.not-chrome {
-            background: #fff3e0;
-            color: #e65100;
-        }
+        
         .btn {
             display: inline-block;
-            padding: 15px 40px;
-            margin: 10px;
+            padding: 16px 45px;
+            margin: 8px;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             color: white;
+            position: relative;
+            overflow: hidden;
         }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
         }
+        
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(66, 133, 244, 0.6);
         }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        
         .btn-secondary {
-            background: #999;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+        
         .btn-secondary:hover {
-            background: #777;
+            background: rgba(255, 255, 255, 0.12);
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
+        
         .instructions {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 25px;
             text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        
         .instructions h3 {
-            color: #333;
-            margin-bottom: 15px;
+            color: #ffffff;
+            margin-bottom: 18px;
             font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        
         .instructions ol {
             padding-left: 20px;
-            color: #666;
-            line-height: 1.8;
+            color: #b0b0b0;
+            line-height: 2;
         }
+        
         .instructions li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            padding-left: 8px;
         }
+        
+        .instructions li::marker {
+            color: #4285f4;
+            font-weight: 700;
+        }
+        
         .countdown {
             font-size: 14px;
-            color: #999;
-            margin-top: 15px;
+            color: #808080;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
+        
+        .countdown-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: rgba(66, 133, 244, 0.2);
+            border-radius: 6px;
+            color: #4285f4;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
         .hidden {
             display: none;
         }
+        
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #4285f4;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-text {
+            font-size: 13px;
+            color: #909090;
+        }
+        
         @media (max-width: 480px) {
             .container {
-                padding: 30px 20px;
+                padding: 35px 25px;
             }
             h1 {
-                font-size: 24px;
+                font-size: 26px;
+            }
+            .chrome-icon-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+            .chrome-icon {
+                width: 80px;
+                height: 80px;
             }
             .btn {
                 width: 100%;
-                margin: 5px 0;
+                margin: 6px 0;
+            }
+            .features {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="chrome-icon">🌐</div>
-        <h1>Open in Chrome Browser</h1>
+        <div class="chrome-icon-wrapper">
+            <div class="glow"></div>
+            <img src="https://www.google.com/chrome/static/images/chrome-logo-m100.svg" 
+                 alt="Chrome Browser" 
+                 class="chrome-icon"
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg'">
+        </div>
+        
+        <h1>Open in Chrome</h1>
+        <p class="subtitle">For the best viewing experience</p>
         
         <div class="browser-check" id="browserStatus">
-            Checking your browser...
+            <span class="spinner"></span>
+            <span>Detecting browser...</span>
         </div>
         
         <div class="message">
-            For the best experience, please open this link in Google Chrome browser.
+            This content is optimized for Google Chrome browser to ensure the best performance and compatibility.
         </div>
 
         <!-- Chrome Users -->
         <div id="chromeUser" class="hidden">
             <button class="btn btn-primary" id="continueBtn">
-                ✓ Continue in Chrome
+                ✓ Continue to Content
             </button>
+            
             <div class="countdown" id="autoRedirect"></div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">Fast Loading</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-text">Secure</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✨</div>
+                    <div class="feature-text">Optimized</div>
+                </div>
+            </div>
         </div>
 
         <!-- Non-Chrome Users -->
         <div id="nonChromeUser" class="hidden">
             <button class="btn btn-primary" id="openChromeBtn">
-                🚀 Open in Chrome
+                🚀 Open in Chrome Browser
             </button>
             <button class="btn btn-secondary" id="continueAnywayBtn">
-                Continue Anyway
+                Continue with Current Browser
             </button>
             
             <div class="instructions">
-                <h3>📱 How to Open in Chrome:</h3>
+                <h3>
+                    <span>📱</span>
+                    <span>How to Open in Chrome</span>
+                </h3>
                 <ol id="instructionsList">
                     <!-- Instructions will be added dynamically -->
                 </ol>
@@ -234,23 +424,24 @@
             
             if (isAndroid) {
                 instructionsList.innerHTML = `
-                    <li>Tap "Open in Chrome" button above</li>
-                    <li>If prompted, select "Chrome" from the list</li>
-                    <li>Or copy this link and paste in Chrome browser</li>
+                    <li>Tap the "Open in Chrome Browser" button above</li>
+                    <li>Select "Chrome" if prompted to choose an app</li>
+                    <li>If Chrome isn't installed, download it from Play Store</li>
+                    <li>Alternatively, copy the link and paste it in Chrome</li>
                 `;
             } else if (isIOS) {
                 instructionsList.innerHTML = `
-                    <li>Tap "Open in Chrome" button above</li>
-                    <li>Or tap the share button (square with arrow)</li>
-                    <li>Scroll and select "Open in Chrome"</li>
-                    <li>If Chrome isn't installed, download it from App Store</li>
+                    <li>Tap the "Open in Chrome Browser" button above</li>
+                    <li>Or tap the Share button (square with arrow up)</li>
+                    <li>Scroll down and select "Open in Chrome"</li>
+                    <li>If Chrome isn't listed, download it from the App Store first</li>
                 `;
             } else {
                 instructionsList.innerHTML = `
-                    <li>Copy this page URL</li>
-                    <li>Open Google Chrome browser</li>
-                    <li>Paste the URL in Chrome's address bar</li>
-                    <li>Or click "Open in Chrome" to try automatic opening</li>
+                    <li>Click the "Open in Chrome Browser" button above</li>
+                    <li>Or copy this page's URL from the address bar</li>
+                    <li>Open Google Chrome on your computer</li>
+                    <li>Paste the URL into Chrome's address bar and press Enter</li>
                 `;
             }
         }
@@ -262,44 +453,55 @@
             const chromeUser = document.getElementById('chromeUser');
             const nonChromeUser = document.getElementById('nonChromeUser');
             
-            if (isChrome) {
-                browserStatus.className = 'browser-check chrome';
-                browserStatus.textContent = '✓ You are using Chrome browser';
-                chromeUser.classList.remove('hidden');
-                
-                // Auto redirect countdown
-                let countdown = 5;
-                const autoRedirectEl = document.getElementById('autoRedirect');
-                autoRedirectEl.textContent = `Auto-redirecting in ${countdown} seconds...`;
-                
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown > 0) {
-                        autoRedirectEl.textContent = `Auto-redirecting in ${countdown} seconds...`;
-                    } else {
+            setTimeout(() => {
+                if (isChrome) {
+                    browserStatus.className = 'browser-check chrome';
+                    browserStatus.innerHTML = '<span class="status-icon">✓</span><span>You are using Chrome browser</span>';
+                    chromeUser.classList.remove('hidden');
+                    
+                    // Auto redirect countdown
+                    let countdown = 5;
+                    const autoRedirectEl = document.getElementById('autoRedirect');
+                    
+                    const updateCountdown = () => {
+                        autoRedirectEl.innerHTML = `
+                            <span>Auto-redirecting in</span>
+                            <span class="countdown-number">${countdown}</span>
+                            <span>seconds...</span>
+                        `;
+                    };
+                    
+                    updateCountdown();
+                    
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            updateCountdown();
+                        } else {
+                            clearInterval(countdownInterval);
+                            regularRedirect();
+                        }
+                    }, 1000);
+                    
+                    // Manual continue button
+                    document.getElementById('continueBtn').addEventListener('click', () => {
                         clearInterval(countdownInterval);
                         regularRedirect();
-                    }
-                }, 1000);
-                
-                // Manual continue button
-                document.getElementById('continueBtn').addEventListener('click', () => {
-                    clearInterval(countdownInterval);
-                    regularRedirect();
-                });
-                
-            } else {
-                browserStatus.className = 'browser-check not-chrome';
-                browserStatus.textContent = '⚠ You are not using Chrome browser';
-                nonChromeUser.classList.remove('hidden');
-                setupInstructions();
-                
-                // Open in Chrome button
-                document.getElementById('openChromeBtn').addEventListener('click', openInChrome);
-                
-                // Continue anyway button
-                document.getElementById('continueAnywayBtn').addEventListener('click', regularRedirect);
-            }
+                    });
+                    
+                } else {
+                    browserStatus.className = 'browser-check not-chrome';
+                    browserStatus.innerHTML = '<span class="status-icon">⚠</span><span>You are not using Chrome browser</span>';
+                    nonChromeUser.classList.remove('hidden');
+                    setupInstructions();
+                    
+                    // Open in Chrome button
+                    document.getElementById('openChromeBtn').addEventListener('click', openInChrome);
+                    
+                    // Continue anyway button
+                    document.getElementById('continueAnywayBtn').addEventListener('click', regularRedirect);
+                }
+            }, 800);
         }
 
         // Run on page load

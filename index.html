@@ -3,87 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>Open in Chrome</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 20px;
         }
         .container {
-            text-align: center;
+            background: white;
+            border-radius: 20px;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
+        .chrome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
             border-radius: 50%;
-            border-top: 4px solid white;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
             color: white;
-            text-decoration: underline;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        .message {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .browser-check {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .browser-check.chrome {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .browser-check.not-chrome {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.6);
+        }
+        .btn-secondary {
+            background: #999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary:hover {
+            background: #777;
+            transform: translateY(-2px);
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .instructions ol {
+            padding-left: 20px;
+            color: #666;
+            line-height: 1.8;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        .countdown {
+            font-size: 14px;
+            color: #999;
+            margin-top: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Redirecting...</h1>
-        <div class="spinner"></div>
-        <p>If you are not redirected automatically, <a href="#" id="manualLink">click here</a>.</p>
+        <div class="chrome-icon">🌐</div>
+        <h1>Open in Chrome Browser</h1>
+        
+        <div class="browser-check" id="browserStatus">
+            Checking your browser...
+        </div>
+        
+        <div class="message">
+            For the best experience, please open this link in Google Chrome browser.
+        </div>
+
+        <!-- Chrome Users -->
+        <div id="chromeUser" class="hidden">
+            <button class="btn btn-primary" id="continueBtn">
+                ✓ Continue in Chrome
+            </button>
+            <div class="countdown" id="autoRedirect"></div>
+        </div>
+
+        <!-- Non-Chrome Users -->
+        <div id="nonChromeUser" class="hidden">
+            <button class="btn btn-primary" id="openChromeBtn">
+                🚀 Open in Chrome
+            </button>
+            <button class="btn btn-secondary" id="continueAnywayBtn">
+                Continue Anyway
+            </button>
+            
+            <div class="instructions">
+                <h3>📱 How to Open in Chrome:</h3>
+                <ol id="instructionsList">
+                    <!-- Instructions will be added dynamically -->
+                </ol>
+            </div>
+        </div>
     </div>
 
     <script>
         // Your redirect URL
         const redirectUrl = 'https://tamizhan-movies.site/fallback?id=6xcRn1Nch/Pc+sg30Ecs+7PCz+NgctPOq7+XmP3sBwUN1FnwNTCIcpjh5GCZnLXX&a=view';
         
-        // Set the manual link
-        document.getElementById('manualLink').href = redirectUrl;
-        
-        // Function to detect if Chrome browser
-        function isChrome() {
-            return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        // Detect browser
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
+            const isAndroid = /Android/i.test(userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+            
+            return { isChrome, isAndroid, isIOS };
         }
-        
-        // Attempt to open in Chrome (for mobile devices)
+
+        // Open in Chrome function
         function openInChrome() {
-            if (/Android/i.test(navigator.userAgent)) {
+            const { isAndroid, isIOS } = detectBrowser();
+            
+            if (isAndroid) {
                 // Android Chrome intent
                 window.location.href = 'intent://' + redirectUrl.replace(/https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
-            } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // iOS - open in Chrome if available
+                
+                // Fallback after 2 seconds
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            } else if (isIOS) {
+                // iOS Chrome URL scheme
                 const chromeUrl = 'googlechrome://' + redirectUrl.replace(/https?:\/\//, '');
                 window.location.href = chromeUrl;
                 
-                // Fallback to regular URL after delay
+                // Fallback after 2 seconds
                 setTimeout(() => {
                     window.location.href = redirectUrl;
-                }, 1500);
+                }, 2000);
             } else {
-                // Desktop - just redirect normally
+                // Desktop - regular redirect
                 window.location.href = redirectUrl;
             }
         }
-        
-        // Redirect after 1 second
-        setTimeout(() => {
-            openInChrome();
-        }, 1000);
+
+        // Regular redirect
+        function regularRedirect() {
+            window.location.href = redirectUrl;
+        }
+
+        // Setup instructions based on platform
+        function setupInstructions() {
+            const { isAndroid, isIOS } = detectBrowser();
+            const instructionsList = document.getElementById('instructionsList');
+            
+            if (isAndroid) {
+                instructionsList.innerHTML = `
+                    <li>Tap "Open in Chrome" button above</li>
+                    <li>If prompted, select "Chrome" from the list</li>
+                    <li>Or copy this link and paste in Chrome browser</li>
+                `;
+            } else if (isIOS) {
+                instructionsList.innerHTML = `
+                    <li>Tap "Open in Chrome" button above</li>
+                    <li>Or tap the share button (square with arrow)</li>
+                    <li>Scroll and select "Open in Chrome"</li>
+                    <li>If Chrome isn't installed, download it from App Store</li>
+                `;
+            } else {
+                instructionsList.innerHTML = `
+                    <li>Copy this page URL</li>
+                    <li>Open Google Chrome browser</li>
+                    <li>Paste the URL in Chrome's address bar</li>
+                    <li>Or click "Open in Chrome" to try automatic opening</li>
+                `;
+            }
+        }
+
+        // Initialize page
+        function init() {
+            const { isChrome } = detectBrowser();
+            const browserStatus = document.getElementById('browserStatus');
+            const chromeUser = document.getElementById('chromeUser');
+            const nonChromeUser = document.getElementById('nonChromeUser');
+            
+            if (isChrome) {
+                browserStatus.className = 'browser-check chrome';
+                browserStatus.textContent = '✓ You are using Chrome browser';
+                chromeUser.classList.remove('hidden');
+                
+                // Auto redirect countdown
+                let countdown = 5;
+                const autoRedirectEl = document.getElementById('autoRedirect');
+                autoRedirectEl.textContent = `Auto-redirecting in ${countdown} seconds...`;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        autoRedirectEl.textContent = `Auto-redirecting in ${countdown} seconds...`;
+                    } else {
+                        clearInterval(countdownInterval);
+                        regularRedirect();
+                    }
+                }, 1000);
+                
+                // Manual continue button
+                document.getElementById('continueBtn').addEventListener('click', () => {
+                    clearInterval(countdownInterval);
+                    regularRedirect();
+                });
+                
+            } else {
+                browserStatus.className = 'browser-check not-chrome';
+                browserStatus.textContent = '⚠ You are not using Chrome browser';
+                nonChromeUser.classList.remove('hidden');
+                setupInstructions();
+                
+                // Open in Chrome button
+                document.getElementById('openChromeBtn').addEventListener('click', openInChrome);
+                
+                // Continue anyway button
+                document.getElementById('continueAnywayBtn').addEventListener('click', regularRedirect);
+            }
+        }
+
+        // Run on page load
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
